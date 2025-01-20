@@ -1,5 +1,5 @@
 ﻿title: emptybraces
-subtitle: A Portfolio Jekyll Theme Built for Developers
+subtitle: An indie game developer with expertise in Unity
 description: >- # this means to ignore newlines until "baseurl:"
   emptybraces's portfolio site.
 
@@ -23,8 +23,8 @@ author: emptybraces
 author_bio: Hi, my name is John Doe. I built this site using devlopr-jekyll :D
 author_email: "motose6★gmail.com"
 author_location: Tokyo
-author_website_url: "https://sujaykundu.com"
-typewrite-text: devlopr is a jekyll framework built for developers. You can edit this in _config.yml file
+author_website_url: "https://emptybraces.github.io/"
+typewrite-text: test
 hero_cover_img: sample_cover.jpg # replace this for changing homepage cover (eg. try cover.jpeg). Image should be in /assets/img
 
 # Experiences

@@ -23,7 +23,7 @@ author: emptybraces
 author_bio: Hi, my name is John Doe. I built this site using devlopr-jekyll :D
 author_email: "motose6★gmail.com"
 author_location: Tokyo
-author_website_url: "https://emptybraces.github.io/"
+# author_website_url: "https://emptybraces.github.io/"
 typewrite-text: test
 hero_cover_img: sample_cover.jpg # replace this for changing homepage cover (eg. try cover.jpeg). Image should be in /assets/img
 

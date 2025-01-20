@@ -30,7 +30,7 @@ author_work_experiences:
             - company_name: Game Developer
               company_logo: salary1.png
               company_url: 
-              designation: Client Game Programmer(2011-2012)
+              designation: Client Programmer(2011-2012)
               description: Worked on the client development of game software for PSP and NintendoDS.
               visibility: true
             - company_name: Web Application Developer
@@ -42,7 +42,7 @@ author_work_experiences:
             - company_name: Game Developer
               company_logo: salary3.png
               company_url: 
-              designation: Full-Stack Game Programmer (2016-present)
+              designation: Full-Stack Programmer (2016-present)
               description: Worked on game software development using Unity, creating games for Nintendo Switch, PS4, and Steam.
               visibility: true
 

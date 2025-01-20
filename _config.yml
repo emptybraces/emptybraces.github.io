@@ -27,40 +27,33 @@ hero_cover_img: sample_cover.jpg # replace this for changing homepage cover (eg.
 
 # Experiences
 author_work_experiences:
-            - company_name: Google
-              company_logo: google.png
-              company_url: https://google.com
-              designation: Software Engineer
-              description: Worked on various Google Products
+            - company_name: Game Developer
+              company_logo: 
+              company_url: 
+              designation: Client Game Programmer(2011-2012)
+              description: Worked on the client development of game software for PSP and NintendoDS.
               visibility: true
-            - company_name: Microsoft
-              company_logo: microsoft.png
-              company_url: https://microsoft.com
-              designation: Azure Developer
-              description: Worked on various Azure Cloud Products
+            - company_name: Web Application Developer
+              company_logo: 
+              company_url: 
+              designation: System Engineer (2012-2014)
+              description: Worked on the development of a large-scale financial system, gaining experience in both client-server side.
               visibility: true
-
-# Education
-author_education_details:
-              - college_logo: mit.png
-                college_name: MIT
-                college_url: https://mit.org
-                college_degree: CS Engineer
-                description: Bachelor of Technology
-                visibility: true
+            - company_name: Game Developer
+              company_logo: 
+              company_url: 
+              designation: System Engineer (2016-present)
+              description: Worked on game software development using Unity, creating games for Nintendo Switch, PS4, and Steam.
+              visibility: true
 
 # Projects
 author_project_details:
-              - project_thumbnail: gamershub.png
-                project_title: Gamers Hub
-                project_description: A Platform built for Gamers and Game Devs
-                project_url: https://gamershub.in
+              - project_thumbnail: 
+                project_title: My Best Pie Menu Ever
+                project_description: An addon for quick access to brushes and frequently used features.
+                project_url: https://extensions.blender.org/add-ons/my-best-pie-menu-ever/
                 visibility: true
-              - project_thumbnail: hack4r.PNG
-                project_title: Hack4r
-                project_description: A Platform built for Hackers and Penetration Testers
-                project_url: https://hack4r.com
-                visibility: true
+
 
 # social links
 twitter_username: emptybraces

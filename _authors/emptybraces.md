@@ -1,8 +1,8 @@
 ---
 name: emptybraces
 username: emptybraces
-bio: "Hi I a John, a Web Developer and Designer."
-site: http://johndoe.com
+bio: "An indie game developer with expertise in Unity."
+site: https://emptybraces.github.io/
 avatar: emptybraces.png
 email: emptybraces★gmail.com
 social:

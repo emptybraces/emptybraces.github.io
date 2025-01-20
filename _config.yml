@@ -4,7 +4,7 @@ description: >- # this means to ignore newlines until "baseurl:"
   emptybraces's portfolio site.
 
 url: "" # the base hostname & protocol for your site, e.g. https://example.github.io
-baseurl: "" # the subpath of your site, e.g. /blog
+baseurl: "/about" # the subpath of your site, e.g. /blog
 
 # Navigation
 urls:
@@ -29,7 +29,7 @@ author: emptybraces
 author_bio: Hi, my name is John Doe. I built this site using devlopr-jekyll :D
 author_email: "motose6★gmail.com"
 author_location: Tokyo
-author_website_url: "https://sujaykundu.com"
+author_website_url: "https://emptybraces.github.io/"
 typewrite-text: devlopr is a jekyll framework built for developers. You can edit this in _config.yml file
 hero_cover_img: sample_cover.jpg # replace this for changing homepage cover (eg. try cover.jpeg). Image should be in /assets/img
 

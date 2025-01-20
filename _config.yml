@@ -12,15 +12,13 @@ urls:
       url: /
     - text: Gallery
       url: /gallery
-    - text: Contact
-      url : /contact
 
 
 # Edit Author details (For multi authors check _data/authors.yml)
 
 author_logo: profile.png
 author: emptybraces
-author_bio: Hi, my name is John Doe. I built this site using devlopr-jekyll :D
+author_bio: An indie game developer with expertise in Unity
 author_email: "motose6★gmail.com"
 author_location: Tokyo
 # author_website_url: "https://emptybraces.github.io/"
@@ -89,7 +87,7 @@ mailchimp_form_url:
 
 # contact form - (choose formspress or getform)
 # getform_endpoint: 83b703c3-9e47-4df4-ac55-e24d7eb02abc
-formspree_email: motose6@gmail.com
+# formspree_email: motose6@gmail.com
 
 # releases - widget can be (sidebar, modal or embed)
 olvy_organization: devlopr

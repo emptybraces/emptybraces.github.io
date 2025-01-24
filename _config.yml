@@ -1,5 +1,5 @@
 ﻿title: emptybraces
-subtitle: emptybraces's portfolio site
+subtitle: An indie game developer with expertise in Unity.
 description: >- # this means to ignore newlines until "baseurl:"
   emptybraces's portfolio site.
 
@@ -52,6 +52,12 @@ author_project_details:
                 project_title: My Best Pie Menu Ever
                 project_description: An addon for quick access to brushes and frequently used features.
                 project_url: https://extensions.blender.org/add-ons/my-best-pie-menu-ever/
+                visibility: true
+              - project_thumbnail: 
+                project_title: Test
+                project_description: Test
+                project_url: Test
+                project_page: Test
                 visibility: true
 
 

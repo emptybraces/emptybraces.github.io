@@ -3,35 +3,30 @@ layout: default
 ---
 <div class="col-lg-12">
 	<div class="row">
-		<div class="col-lg-2">
+		<div class="col-lg-3">
 			<div class="card">
 				<div class="card-header">
 					<p>Reference Selector</p>
 				</div>
-				<div class="card-body text-dark tree">
+				<div class="card-body text-dark manual-tree">
 					<li class="tag-head"><a href="#" data-target="content1" class="toc-link">content1</a></li>
 					<li class="tag-head"><a href="#" data-target="content2" class="toc-link">content2</a></li>
 				</div>
 			</div>
 		</div>
-		<div class="col-lg-10" id="content">
+		<div class="col-lg-11" id="content">
 			{%- include test/test.html -%}
 			{%- include test/test2.html -%}
 		</div>
 	</div>
 </div>
 <script>
-	// 目次リンクのクリックイベントを設定
 	document.querySelectorAll('.toc-link').forEach(link => {
 		link.addEventListener('click', event => {
-			event.preventDefault(); // デフォルトのリンク動作を無効化
-
-			// すべてのコンテンツを非表示にする
+			event.preventDefault();
 			document.querySelectorAll('.manual-content-section').forEach(section => {
 				section.classList.remove('active');
 			});
-
-			// 対応するコンテンツを表示
 			const targetId = link.getAttribute('data-target');
 			const targetContent = document.getElementById(targetId);
 			if (targetContent) {

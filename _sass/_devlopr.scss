@@ -1286,10 +1286,43 @@ footer {
 .highlight .gd { color: #f92672; } /* Generic.Deleted & Diff Deleted */
 .highlight .gi { color: #a6e22e; } /* Generic.Inserted & Diff Inserted */
 
-
 .manual-content-section {
-	display: none; /* 初期状態では全て非表示 */
+	display: none;
+	/* 初期状態では全て非表示 */
 }
+
 .manual-content-section.active {
-	display: block; /* アクティブなコンテンツだけ表示 */
+	display: block;
+	/* アクティブなコンテンツだけ表示 */
+}
+
+.manual-tree {
+	counter-reset: list-counter;
+	/* カウンターの初期化 */
+}
+
+.manual-tree li {
+	list-style: none;
+	/* デフォルトのリストスタイルを削除 */
+	counter-increment: list-counter;
+	/* カウンターをインクリメント */
+	position: relative;
+}
+
+.manual-tree li::before {
+	content: counters(list-counter, ".") " ";
+	/* 親階層も含むナンバリング */
+	position: absolute;
+	left: -2em;
+	/* 必要に応じて調整 */
+}
+
+.manual-tree ol {
+	counter-reset: list-counter;
+	/* 入れ子のカウンターを再初期化 */
+}
+
+.manual-tree ol>li {
+	counter-increment: list-counter;
+	/* 入れ子のカウンターをインクリメント */
 }

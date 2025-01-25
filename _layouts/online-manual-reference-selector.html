@@ -4,10 +4,36 @@ layout: default
 <div class="col-lg-12">
 	<div class="row">
 		<div class="col-lg-4">
-			444444
+			<div class="card">
+				<div class="card-header">Reference Selector </div>
+				<div class="card-body text-dark tree">
+					<li class="tag-head toc-link" data-content="content1"> </li>
+					<li class="tag-head toc-link" data-content="content2"> </li>
+				</div>
+			</div>
 		</div>
-		<div class="col-lg-8">
-			888888
+		<div class="col-lg-8" id="content">
+			{%- include test/test.html -%}
 		</div>
 	</div>
 </div>
+<script>
+	// 目次リンクのクリックイベントを設定
+	document.querySelectorAll('.toc-link').forEach(link => {
+		link.addEventListener('click', event => {
+			event.preventDefault(); // デフォルトのリンク動作を無効化
+
+			// すべてのコンテンツを非表示にする
+			document.querySelectorAll('.content-section').forEach(section => {
+				section.classList.remove('active');
+			});
+
+			// 対応するコンテンツを表示
+			const targetId = link.getAttribute('data-target');
+			const targetContent = document.getElementById(targetId);
+			if (targetContent) {
+				targetContent.classList.add('active');
+			}
+		});
+	});
+</script>

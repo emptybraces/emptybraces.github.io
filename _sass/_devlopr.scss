@@ -1290,7 +1290,10 @@ footer {
 	display: none;
 	/* 初期状態では全て非表示 */
 }
-
+.manual-content-section.introduction {
+	display: block;
+	/* 初期表示 */
+}
 .manual-content-section.active {
 	display: block;
 	/* アクティブなコンテンツだけ表示 */
@@ -1306,15 +1309,11 @@ footer {
 	/* デフォルトのリストスタイルを削除 */
 	counter-increment: list-counter;
 	/* カウンターをインクリメント */
-	position: relative;
 }
 
 .manual-tree li::before {
 	content: counters(list-counter, ".") " ";
 	/* 親階層も含むナンバリング */
-	position: absolute;
-	left: -2em;
-	/* 必要に応じて調整 */
 }
 
 .manual-tree ol {

@@ -1285,3 +1285,11 @@ footer {
 .highlight .gu { color: #75715e; } /* Generic.Subheading & Diff Unified/Comment? */
 .highlight .gd { color: #f92672; } /* Generic.Deleted & Diff Deleted */
 .highlight .gi { color: #a6e22e; } /* Generic.Inserted & Diff Inserted */
+
+
+.manual-content-section {
+	display: none; /* 初期状態では全て非表示 */
+}
+.manual-content-section.active {
+	display: block; /* アクティブなコンテンツだけ表示 */
+}

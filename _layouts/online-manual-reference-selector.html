@@ -5,15 +5,18 @@ layout: default
 	<div class="row">
 		<div class="col-lg-2">
 			<div class="card">
-				<div class="card-header">Reference Selector </div>
+				<div class="card-header">
+					<p>Reference Selector</p>
+				</div>
 				<div class="card-body text-dark tree">
-					<li class="tag-head toc-link" data-content="content1">content1</li>
-					<li class="tag-head toc-link" data-content="content2">content2</li>
+					<li class="tag-head"><a href="#" data-target="content1" class="toc-link">content1</a></li>
+					<li class="tag-head"><a href="#" data-target="content2" class="toc-link">content2</a></li>
 				</div>
 			</div>
 		</div>
 		<div class="col-lg-10" id="content">
 			{%- include test/test.html -%}
+			{%- include test/test2.html -%}
 		</div>
 	</div>
 </div>
@@ -24,7 +27,7 @@ layout: default
 			event.preventDefault(); // デフォルトのリンク動作を無効化
 
 			// すべてのコンテンツを非表示にする
-			document.querySelectorAll('.content-section').forEach(section => {
+			document.querySelectorAll('.manual-content-section').forEach(section => {
 				section.classList.remove('active');
 			});
 

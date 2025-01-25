@@ -27,19 +27,19 @@ hero_cover_img: sample_cover.jpg # replace this for changing homepage cover (eg.
 
 # Experiences
 author_work_experiences:
-            - company_name: Game Developer
+            - company_name: Game Developer Company(Inc.)
               company_logo: salary1.png
               company_url: 
               designation: Client Programmer(2011-2012)
               description: Worked on the client development of game software for PSP and NintendoDS.
               visibility: true
-            - company_name: Web Application Developer
+            - company_name: Web Application Developer Company(Inc.)
               company_logo: salary2.png
               company_url: 
               designation: System Engineer (2012-2014)
               description: Worked on the development of a large-scale financial system, gaining experience in both client-server side.
               visibility: true
-            - company_name: Game Developer
+            - company_name: Game Developer Company(Inc.)
               company_logo: salary3.png
               company_url: 
               designation: Full-Stack Programmer (2016-present)

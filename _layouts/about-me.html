@@ -12,7 +12,7 @@ layout: default
 				<p class="profile-bio">{{ site.subtitle }}</p>
 				{% if site.github_username %} {%- include github_follow_button.html -%} {%
 				endif %}
-
+				<img href="https://codetime.dev" alt="CodeTime Badge" src="https://img.shields.io/endpoint?style=social&color=222&url=https%3A%2F%2Fapi.codetime.dev%2Fshield%3Fid%3D31345%26project%3D%26in=0">
 				<p class="profile-links">
 					{% if site.twitter_username %}
 					<a class="social-link" href="http://twitter.com/{{ site.twitter_username }}" target="_blank" rel="noopener noreferrer">
@@ -104,7 +104,7 @@ layout: default
 						<h6 class="experience-info">{{ project.project_info}}</h6>
 						<p class="experience-desc">{{ project.project_description }}</p>
 						<p><a class="project-link" href="{{project.project_url}}" target="_blank" rel="noopener noreferrer">{{ project.project_url_label}}</a></p>
-						<p><a class="project-link" href="{{site.url}}{{site.baseurl}}{{ project.project_page }}">{{ project.project_page_label}}</a></p>
+						<p><a class="project-link" href="{{site.url}}{{site.baseurl}}{{ project.project_page }}"  target="_blank">{{ project.project_page_label}}</a></p>
 					</div>
 				</div>
 				<br />

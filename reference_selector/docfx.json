@@ -1,0 +1,37 @@
+{
+	"$schema": "https://raw.githubusercontent.com/dotnet/docfx/main/schemas/docfx.schema.json",
+	"metadata": [],
+	"build": {
+		"content": [
+			{
+				"files": [
+					"**/*.{md,yml}"
+				],
+				"exclude": [
+					"_site/**"
+				]
+			}
+		],
+		"resource": [
+			{
+				"files": [
+					"images/**"
+				]
+			}
+		],
+		"output": "_site",
+		"template": [
+			"default",
+			"modern"
+		],
+		"sitemap": {
+			"baseUrl": "https://emptybraces.github.io/reference-selector"
+		},
+		"globalMetadata": {
+			"_appName": "[Reference Selector] Online Manual",
+			"_appTitle": "[Reference Selector] Online Manual",
+			"_enableSearch": true,
+			"pdf": false
+		}
+	}
+}

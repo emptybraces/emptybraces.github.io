@@ -48,19 +48,19 @@ author_work_experiences:
 
 # Projects
 author_project_details:
-              - project_thumbnail: 
+              - project_thumbnail: mpm.jpg
                 visibility: true
                 project_title: My Best Pie Menu Ever
                 project_description: An addon for quick access to brushes and frequently used features.
                 project_url: https://extensions.blender.org/add-ons/my-best-pie-menu-ever/
                 project_url_label: BLENDER EXTENSIONS
               - project_thumbnail: 
-                visibility: true
+                visibility: false
                 project_title: Test
                 project_description: Test
                 project_url: Test
                 project_url_label: url label
-                project_page: reference_selector/_site/index.html
+                project_page: online-manual-reference-selector
                 project_page_label: ONLINE MANUAL
 
 

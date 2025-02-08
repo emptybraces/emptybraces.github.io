@@ -55,13 +55,12 @@ author_project_details:
                 project_url: https://extensions.blender.org/add-ons/my-best-pie-menu-ever/
                 project_url_label: BLENDER EXTENSIONS
               - project_thumbnail: 
-                visibility: false
-                project_title: Test
-                project_description: Test
-                project_url: Test
-                project_url_label: url label
-                project_page: online-manual-reference-selector
-                project_page_label: ONLINE MANUAL
+                visibility: true
+                project_thumbnail: reference_selector.png
+                project_title: Reference Selector
+                project_description: Streamlines your workflow by providing an intuitive selection history and efficient reference field assignment.
+                project_url: 
+                project_url_label: UNITY ASSET STORE
 
 
 # social links

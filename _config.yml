@@ -48,6 +48,12 @@ author_work_experiences:
 
 # Projects
 author_project_details:
+              - project_thumbnail: ebs.jpg
+                visibility: true
+                project_title: Essential Brush Saver
+                project_description: Automatically save/load essential brush settings.
+                project_url: https://extensions.blender.org/add-ons/essential-brush-saver/
+                project_url_label: BLENDER EXTENSIONS
               - project_thumbnail: mpm.jpg
                 visibility: true
                 project_title: My Best Pie Menu Ever

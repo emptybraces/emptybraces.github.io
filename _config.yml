@@ -52,27 +52,24 @@ author_project_details:
                 visibility: true
                 project_title: Essential Brush Saver
                 project_description: Automatically save/load essential brush settings.
-                project_url: https://extensions.blender.org/add-ons/essential-brush-saver/
                 project_url_label: BLENDER EXTENSIONS
+                project_url: https://extensions.blender.org/add-ons/essential-brush-saver/
+
               - project_thumbnail: mpm.jpg
                 visibility: true
                 project_title: My Best Pie Menu Ever
                 project_description: An addon for quick access to brushes and frequently used features.
-                project_url: https://extensions.blender.org/add-ons/my-best-pie-menu-ever/
                 project_url_label: BLENDER EXTENSIONS
-              - project_thumbnail: 
+                project_url: https://extensions.blender.org/add-ons/my-best-pie-menu-ever/
+
+              - project_thumbnail: reference_selector.png
                 visibility: true
-                project_thumbnail: reference_selector.jpg
                 project_title: Reference Selector
                 project_description: Streamlines your workflow by providing an intuitive selection history and efficient reference field assignment.
-                project_url: https://assetstore.unity.com/packages/slug/308300
                 project_url_label: UNITY ASSET STORE
-                project_page: https://emptybraces.github.io/reference-selector
+                project_url: https://assetstore.unity.com/packages/slug/308300
                 project_page_label: ONLINE MANUAL
-
-
-
-
+                project_page: https://emptybraces.github.io/reference-selector
 
 
 # social links

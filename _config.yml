@@ -165,7 +165,7 @@ plugins:
   - jekyll-gist
   - jekyll-seo-tag
   - jekyll-sitemap
-  - jekyll-feed
+  # - jekyll-feed
 
   # jekyll admin is causing issues with github pages, so it's disabled by default
   # - jekyll-admin 

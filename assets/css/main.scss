@@ -6,3 +6,21 @@
 .example-main {
   color: blue;
 }
+.glitch-wrapper {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+}
+
+.glitch-wrapper img {
+  display: block;
+}
+
+.vhs-slice {
+  position: absolute;
+  left: 0;
+  right: 0;
+  background: inherit;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}

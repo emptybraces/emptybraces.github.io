@@ -141,7 +141,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
     buildSpatialIndex();
-    document.addEventListener("mousemove", function (e) {
+    document.addEventListener("pointermove", function (e) {
         const mx = e.pageX;
         const my = e.pageY;
         const radiusSq = MOUSE_RADIUS * MOUSE_RADIUS;

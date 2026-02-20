@@ -1,13 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    /* ==============================
-       🔧 調整可能パラメータ
-    ============================== */
-
+    // 文字カオスエフェクト
     const MOUSE_RADIUS = 80;
     const RECOVERY_RADIUS = 140;
 
-    const BASE_MAX_INFECTION = 25;      // 基本最大感染
+    const BASE_MAX_INFECTION = 10;      // 基本最大感染
     const MAX_VARIATION = 5;           // 個体差
 
     const SPREAD_THRESHOLD = 3;
@@ -20,9 +17,19 @@ document.addEventListener("DOMContentLoaded", function () {
     const TICK_RATE = 100;
 
     const ZALGO_CHARS = ["̷", "̸", "̶", "̴", "̵", "̹", "̺", "̻", "̼", "͜", "͝", "͞", "͟", "͠", "̾", "̿", "͗", "͘", "͙", "͚"];
-    const CHAOS_CHARS = "▓▒░█▌▄▐▀■□◆◇※¤¶§≡±×÷≠∞";
+    const CHAOS_CHARS =
+        "▓▒░█▌▄▐▀■□◆◇※¤¶§≡±×÷≠∞" +
+        "卐࿗۞₪" +
+        "爨驫龘靐齉灩鑿饕鱻黷攣癲籟躑纛讖顳囈" +
+        "ｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄﾅﾆﾇﾈﾉﾊﾋﾌﾍﾎﾏﾐﾑﾒﾓﾔﾕﾖﾗﾘﾙﾚﾛﾜｦﾝﾞﾟ" +
+        "ⷶⷷⷸⷹⷺⷻⷼⷽⷾⷿ" +
+        "ꙮ꙯꙰꙱꙲꙳ꙴꙵ";
+    const ORIGINAL_THRESHOLD = 0.1;
     const HARD_GLITCH_THRESHOLD = 0.6;
     const FULL_GLITCH_THRESHOLD = 0.85;
+
+    const SHAKE_STRENGTH = 1.8;      // 震え最大px
+    const SHAKE_THRESHOLD = 2;      // 感染がこれ以上で震える
     /* ============================== */
 
     function zalgoify(char, intensity) {
@@ -36,22 +43,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const level = infection / maxInfection;
 
-        if (level < 0.3) {
+        if (level < ORIGINAL_THRESHOLD) {
             return original;
         }
 
         if (level < HARD_GLITCH_THRESHOLD) {
-            return zalgoify(original, 3);
+            return zalgoify(original, 8);
         }
 
-        if (level < FULL_GLITCH_THRESHOLD) {
-            if (Math.random() < 0.4) {
-                return CHAOS_CHARS[Math.floor(Math.random() * CHAOS_CHARS.length)];
-            }
-            return zalgoify(original, 2);
+        // if (level < FULL_GLITCH_THRESHOLD) {
+        if (Math.random() < 0.6) {
+            return CHAOS_CHARS[Math.floor(Math.random() * CHAOS_CHARS.length)];
         }
+        return zalgoify(original, Math.floor(10 + Math.random() * 50));
+        // }
 
-        return CHAOS_CHARS[Math.floor(Math.random() * CHAOS_CHARS.length)];
+        // return CHAOS_CHARS[Math.floor(Math.random() * CHAOS_CHARS.length)];
     }
     function wrapText(node) {
 
@@ -79,6 +86,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 span.dataset.maxInfection = randomMax.toString();
 
+                span.dataset.seedX = (Math.random() * 2 - 1).toString();
+                span.dataset.seedY = (Math.random() * 2 - 1).toString();
                 fragment.appendChild(span);
             }
 
@@ -186,15 +195,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }, TICK_RATE);
 
-    /* ==============================
-       📼 感染型VHS崩壊（保持＋回復）
-    ============================== */
+    // 画像VHSエフェクト
 
     const IMAGE_MAX_INFECTION = 100;
     const IMAGE_INCREASE = 20;
     const IMAGE_RECOVERY_DELAY = 1500;
     const IMAGE_RECOVERY_SPEED = 1;
-    const IMAGE_TICK_RATE = 120;
+    const IMAGE_TICK_RATE = 100;
 
     const images = Array.from(document.querySelectorAll("img"));
 
@@ -236,19 +243,25 @@ document.addEventListener("DOMContentLoaded", function () {
             if (infection > 0) {
 
                 const level = infection / IMAGE_MAX_INFECTION;
+                const rect = img.getBoundingClientRect();
 
                 /* ======================
                    基本VHS崩壊（強さ依存）
                 ====================== */
-
-                img.style.transform =
-                    `translateX(${(Math.random() - 0.5) * 40 * level}px)
-                 skewX(${(Math.random() - 0.5) * 4 * level}deg)`;
+                var rpx = (Math.random() * 10 - 0.5) * 40 * level;
+                var rw = 1 + (Math.random() - 0.5) * 2.0 * level;
+                const transformString = `
+                    translateX(${rpx}px)
+                    skewX(${(Math.random() - 0.5) * 4 * level}deg)
+                    scaleX(${rw})
+                `;
+                img.style.transform = transformString;
 
                 img.style.filter =
                     `contrast(${100 + level * 150}%)
-                 brightness(${100 - level * 30}%)
-                 hue-rotate(${Math.sin(t / 100) * 60 * level}deg)`;
+                    brightness(${100 - level * 30}%)
+                    hue-rotate(${Math.sin(t / 100) * 60 * level}deg)
+                `;
 
 
                 /* ======================
@@ -273,16 +286,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         slice.style.position = "absolute";
                         slice.style.left = "0";
+                        slice.style.top = "0";
                         slice.style.width = "100%";
-                        slice.style.height = height + "%";
-                        slice.style.top = top + "%";
+                        slice.style.height = "100%";
+                        slice.style.pointerEvents = "none";
 
+                        /* 帯マスク */
+                        slice.style.clipPath = `
+                            polygon(
+                                0% ${top}%,
+                                100% ${top}%,
+                                100% ${top + height}%,
+                                0% ${top + height}%
+                            )
+                        `;
+
+                        /* ノイズ */
                         slice.style.backgroundImage = "url('/assets/img/noise.jpg')";
                         slice.style.backgroundSize = "cover";
+                        slice.style.backgroundRepeat = "no-repeat";
                         slice.style.opacity = 0.6 + level * 0.4;
-
-                        slice.style.transform =
-                            `translateX(${offset}px)`;
+                        /* 同期変形 */
+                        slice.style.transform = `
+                            ${transformString}
+                            translateX(${offset}px)
+                        `;
 
                     } else {
 
@@ -322,7 +350,7 @@ document.addEventListener("DOMContentLoaded", function () {
                    一瞬上下反転（感染度依存）
                 ====================== */
 
-                const flipChance = 0.02 + level * 0.08;
+                const flipChance = 0.15 + level * 0.3;
 
                 if (Math.random() < flipChance && img.dataset.flip === "0") {
 
@@ -357,17 +385,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     }, IMAGE_TICK_RATE);
 
-    /* ==============================
-   🌀 軽量 空間破壊レンズ
-    ============================== */
+    // レンズエフェクト
 
     /* ---- 調整可能パラメータ ---- */
 
     const LENS_RADIUS = 140;          // レンズ半径
     const LENS_BLUR = 6;              // 最大ブラー
     const LENS_DISTORT = 10;          // ズレ強度
-    const LENS_TICK = 80;             // 更新速度(ms)
-    const LENS_RGB_SHIFT = 3;         // RGB分離強度
+    const LENS_TICK = 50;             // 更新速度(ms)
 
     /* ------------------------------ */
 

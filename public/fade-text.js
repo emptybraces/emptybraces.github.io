@@ -68,25 +68,34 @@ document.addEventListener("DOMContentLoaded", function () {
     function wrapText(node) {
 
         if (node.nodeType === Node.TEXT_NODE) {
-
             const text = node.textContent;
             const fragment = document.createDocumentFragment();
-
             for (let i = 0; i < text.length; i++) {
 
                 const char = text[i];
-                const span = document.createElement("span");
+                // 空白や改行はそのままにする
+                if (char.trim() === "") {
+                    fragment.appendChild(document.createTextNode(char));
+                    continue;
+                }
 
-                span.textContent = char;
+                const span = document.createElement("span");
                 span.className = "infect-letter";
 
-                // ★ 文字ごとの最大感染値をランダム化
-                const randomMax =
-                    BASE_MAX_INFECTION +
-                    Math.floor(Math.random() * MAX_VARIATION);
+                const base = document.createElement("span");
+                base.className = "base";
+                base.textContent = char;
+
+                const overlay = document.createElement("span");
+                overlay.className = "overlay";
+                span.appendChild(base);
+                span.appendChild(overlay);
+
+                span._base = base;
+                span._overlay = overlay;
                 span._infection = 0;
                 span._lastInfected = 0;
-                span._maxInfection = randomMax;
+                span._maxInfection = BASE_MAX_INFECTION + Math.floor(Math.random() * MAX_VARIATION);// 文字ごとの最大感染値をランダム化
                 span._original = char;
 
                 fragment.appendChild(span);
@@ -113,12 +122,6 @@ document.addEventListener("DOMContentLoaded", function () {
             };
         });
     }
-    updateRectCache();
-    window.addEventListener("resize", () => {
-        updateRectCache();
-        buildSpatialIndex();
-    });
-
     let lineGroups = [];
     function buildSpatialIndex() {
         lineGroups = [];
@@ -140,43 +143,46 @@ document.addEventListener("DOMContentLoaded", function () {
             lineGroups.push(currentLine);
         }
     }
+    updateRectCache();
     buildSpatialIndex();
-    document.addEventListener("pointermove", function (e) {
-        const mx = e.pageX;
-        const my = e.pageY;
-        const radiusSq = MOUSE_RADIUS * MOUSE_RADIUS;
-        lineGroups.forEach(group => {
-
-            const firstRect = rectCache[group[0]];
-            const dy = firstRect.y - my;
-
-            if (dy * dy > radiusSq) return;
-
-            group.forEach(index => {
-
-                const rect = rectCache[index];
-                const dx = rect.x - mx;
-                const dy2 = rect.y - my;
-
-                if (dx * dx + dy2 * dy2 < radiusSq) {
-
-                    const letter = letters[index];
-
-                    letter._infection += MOUSE_INCREASE;
-                    letter._lastInfected = performance.now();
-                    activeLetters.add(letter);
-                }
-            });
-        });
+    window.addEventListener("resize", () => {
+        updateRectCache();
+        buildSpatialIndex();
+    });
+    let pointerX = -9999;
+    let pointerY = -9999;
+    document.addEventListener("pointermove", e => {
+        pointerX = e.pageX;
+        pointerY = e.pageY;
     });
 
     // メインループ
     let lastUpdate = 0;
     function update(now) {
-
+        // 感染処理
+        if (pointerX !== -9999) {
+            const radiusSq = MOUSE_RADIUS * MOUSE_RADIUS;
+            lineGroups.forEach(group => {
+                const firstRect = rectCache[group[0]];
+                const dy = firstRect.y - pointerY;
+                if (dy * dy > radiusSq)
+                    return;
+                group.forEach(index => {
+                    const rect = rectCache[index];
+                    const dx = rect.x - pointerX;
+                    const dy2 = rect.y - pointerY;
+                    if (dx * dx + dy2 * dy2 < radiusSq) {
+                        const letter = letters[index];
+                        letter._infection += MOUSE_INCREASE;
+                        letter._lastInfected = now;
+                        activeLetters.add(letter);
+                    }
+                });
+            });
+        }
+        // 回復処理
         if (now - lastUpdate >= TICK_RATE) {
             activeLetters.forEach(letter => {
-
                 let infection = letter._infection;
                 const previous = infection;
                 const maxInfection = letter._maxInfection;
@@ -194,10 +200,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (infection !== previous) {
 
                     if (infection === 0) {
-                        letter.textContent = letter._original;
+                        letter._overlay.textContent = "";
                         activeLetters.delete(letter);
                     } else {
-                        letter.textContent = corruptChar(letter._original, infection, maxInfection);
+                        letter._overlay.textContent = corruptChar(letter._original, infection, maxInfection);
                     }
                 }
             });

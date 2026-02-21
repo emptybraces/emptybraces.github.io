@@ -29,11 +29,21 @@
     position: relative;
     display: inline-block;
 }
-
+.infect-letter .base {
+    transition: color 0.15s ease;
+}
 .infect-letter .overlay {
     position: absolute;
     left: 0;
     top: 0;
     pointer-events: none;
     white-space: pre;
+    font: inherit;
+}
+.infect-letter.glitched .base {
+    color: transparent;
+}
+#profile-card .infect-letter.glitched .overlay {
+    color: #f0f;
+    text-shadow: 0 0 4px #f0f;
 }

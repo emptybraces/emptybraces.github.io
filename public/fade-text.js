@@ -201,9 +201,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
                     if (infection === 0) {
                         letter._overlay.textContent = "";
+                        letter.classList.remove("glitched");
                         activeLetters.delete(letter);
                     } else {
                         letter._overlay.textContent = corruptChar(letter._original, infection, maxInfection);
+                        letter.classList.add("glitched");
                     }
                 }
             });

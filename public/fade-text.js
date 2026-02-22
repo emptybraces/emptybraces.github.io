@@ -3,15 +3,15 @@ document.addEventListener("DOMContentLoaded", function () {
     // 文字カオスエフェクト
     const MOUSE_RADIUS = 80;
 
-    const BASE_MAX_INFECTION = 10;      // 基本最大感染
-    const MAX_VARIATION = 5;           // 個体差
+    const BASE_MAX_INFECTION = 20;      // 基本最大感染
+    const MAX_VARIATION = 30;           // 個体差
 
-    const MOUSE_INCREASE = 2;
+    const MOUSE_INCREASE = 20;
 
-    const RECOVERY_SPEED = 1;
+    const RECOVERY_SPEED = 3;
     const RECOVERY_DELAY = 1500;       // ← 感染後この時間で回復開始(ms)
 
-    const TICK_RATE = 80;
+    const TICK_RATE = 100;
 
     const ZALGO_CHARS = ["̷", "̸", "̶", "̴", "̵", "̹", "̺", "̻", "̼", "͜", "͝", "͞", "͟", "͠", "̾", "̿", "͗", "͘", "͙", "͚"];
     const CHAOS_CHARS =
@@ -51,22 +51,29 @@ document.addEventListener("DOMContentLoaded", function () {
         const index = intensity % ZALGO_POOL.length;
         return char + ZALGO_POOL[index];
     }
-    function corruptChar(original, infection, maxInfection) {
-
-        const level = infection / maxInfection;
-        if (level < ORIGINAL_THRESHOLD)
-            return original;
-        if (level < HARD_GLITCH_THRESHOLD)
-            return zalgoify(original, infection);
-        if (FastRandom() < 0.6) {
-            return CHAOS_CHARS[
-                Math.floor(FastRandom() * CHAOS_CHARS.length)
-            ];
+    function zalgoifySmooth(char, strength, seed) {
+        let result = char;
+        const count = Math.floor(strength * MAX_ZALGO_INTENSITY);
+        for (let i = 0; i < count; i++) {
+            const r = Math.abs(Math.sin((i + seed) * 12.9898));
+            const index = Math.floor(r * ZALGO_CHARS.length);
+            result += ZALGO_CHARS[index];
         }
-        return zalgoify(original, infection * 3);
+        return result;
+    }
+    function corruptChar(original, infection, maxInfection, seed) {
+        const level = infection / maxInfection;
+        const smooth = level * level;
+        if (smooth < 0.4)
+            return zalgoifySmooth(original, smooth * 0.5, seed);
+        if (smooth < 0.75)
+            return zalgoifySmooth(original, smooth, seed);
+        if (FastRandom() < 0.85) {
+            return CHAOS_CHARS[Math.floor(FastRandom() * CHAOS_CHARS.length)];
+        }
+        return zalgoifySmooth(original, smooth * 1.2, seed);
     }
     function wrapText(node) {
-
         if (node.nodeType === Node.TEXT_NODE) {
             const text = node.textContent;
             const fragment = document.createDocumentFragment();
@@ -93,8 +100,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 span._base = base;
                 span._overlay = overlay;
+                span._seed = FastRandom() * 1000;
                 span._infection = 0;
                 span._lastInfected = 0;
+                span._infectionSpeedMultiplier = 1 + ((FastRandom() - 0.5) * 2) * 0.5;
                 span._maxInfection = BASE_MAX_INFECTION + Math.floor(Math.random() * MAX_VARIATION);// 文字ごとの最大感染値をランダム化
                 span._original = char;
 
@@ -158,7 +167,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // メインループ
     let lastUpdate = 0;
+    let prevTime = null;
     function update(now) {
+        if (prevTime === null) prevTime = now;
+        const dt = (now - prevTime) / 1000;
+        prevTime = now;
         // 感染処理
         if (pointerX !== -9999) {
             const radiusSq = MOUSE_RADIUS * MOUSE_RADIUS;
@@ -173,7 +186,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     const dy2 = rect.y - pointerY;
                     if (dx * dx + dy2 * dy2 < radiusSq) {
                         const letter = letters[index];
-                        letter._infection += MOUSE_INCREASE;
+                        letter._infection += MOUSE_INCREASE * dt * letter._infectionSpeedMultiplier;
                         letter._lastInfected = now;
                         activeLetters.add(letter);
                     }
@@ -184,36 +197,32 @@ document.addEventListener("DOMContentLoaded", function () {
         if (now - lastUpdate >= TICK_RATE) {
             activeLetters.forEach(letter => {
                 let infection = letter._infection;
-                const previous = infection;
                 const maxInfection = letter._maxInfection;
                 const last = letter._lastInfected;
 
-                if (infection > 0 && now - last > RECOVERY_DELAY) {
+                if (0 < infection && now - last > RECOVERY_DELAY) {
                     infection -= RECOVERY_SPEED;
+                    if (infection < 0) infection = 0;
                 }
-
-                if (infection < 0) infection = 0;
-                if (infection > maxInfection) infection = maxInfection;
+                if (maxInfection < infection)
+                    infection = maxInfection;
 
                 letter._infection = infection;
-
-                if (infection !== previous) {
-
-                    if (infection === 0) {
+                if (infection < maxInfection) {
+                    if (infection <= 0) {
                         letter._overlay.textContent = "";
                         letter.classList.remove("glitched");
                         activeLetters.delete(letter);
                     } else {
-                        letter._overlay.textContent = corruptChar(letter._original, infection, maxInfection);
+                        letter._overlay.textContent = corruptChar(letter._original, infection, maxInfection, letter._seed);
                         letter.classList.add("glitched");
                     }
                 }
             });
-
             lastUpdate = now;
         }
         UpdateImages(now);
-        UpdateLens(now);
+        // UpdateLens(now);
         requestAnimationFrame(update);
     }
     requestAnimationFrame(update);
@@ -416,82 +425,82 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // レンズエフェクト
-    const LENS_RADIUS = 140;
-    const LENS_BLUR = 6;
-    const LENS_DISTORT = 10;
-    const LENS_LOGIC_INTERVAL = 50;
+    // const LENS_RADIUS = 140;
+    // const LENS_BLUR = 6;
+    // const LENS_DISTORT = 10;
+    // const LENS_LOGIC_INTERVAL = 50;
 
-    const lensLayer = document.createElement("div");
+    // const lensLayer = document.createElement("div");
 
-    lensLayer.style.position = "fixed";
-    lensLayer.style.left = "0";
-    lensLayer.style.top = "0";
-    lensLayer.style.width = "100vw";
-    lensLayer.style.height = "100vh";
-    lensLayer.style.pointerEvents = "none";
-    lensLayer.style.zIndex = "99999";
-    lensLayer.style.backdropFilter = "none";
-    lensLayer.style.webkitBackdropFilter = "none";
+    // lensLayer.style.position = "fixed";
+    // lensLayer.style.left = "0";
+    // lensLayer.style.top = "0";
+    // lensLayer.style.width = "100vw";
+    // lensLayer.style.height = "100vh";
+    // lensLayer.style.pointerEvents = "none";
+    // lensLayer.style.zIndex = "99999";
+    // lensLayer.style.backdropFilter = "none";
+    // lensLayer.style.webkitBackdropFilter = "none";
 
-    document.body.appendChild(lensLayer);
+    // document.body.appendChild(lensLayer);
 
-    let lensMouseX = -9999;
-    let lensMouseY = -9999;
-    let lensActive = false;
-    let lensDirty = false;
-    let lensLastLogic = 0;
+    // let lensMouseX = -9999;
+    // let lensMouseY = -9999;
+    // let lensActive = false;
+    // let lensDirty = false;
+    // let lensLastLogic = 0;
 
-    document.addEventListener("mousemove", e => {
-        lensMouseX = e.clientX;
-        lensMouseY = e.clientY;
-        lensActive = true;
-        lensDirty = true;
-    });
+    // document.addEventListener("mousemove", e => {
+    //     lensMouseX = e.clientX;
+    //     lensMouseY = e.clientY;
+    //     lensActive = true;
+    //     lensDirty = true;
+    // });
 
-    document.addEventListener("mouseleave", () => {
-        lensActive = false;
-        lensDirty = true;
-    });
+    // document.addEventListener("mouseleave", () => {
+    //     lensActive = false;
+    //     lensDirty = true;
+    // });
 
-    function UpdateLens(now) {
+    // function UpdateLens(now) {
 
-        if (!lensActive) {
-            if (lensDirty) {
-                lensLayer.style.backdropFilter = "none";
-                lensLayer.style.webkitBackdropFilter = "none";
-                lensLayer.style.maskImage = "none";
-                lensDirty = false;
-            }
-            return;
-        }
+    //     if (!lensActive) {
+    //         if (lensDirty) {
+    //             lensLayer.style.backdropFilter = "none";
+    //             lensLayer.style.webkitBackdropFilter = "none";
+    //             lensLayer.style.maskImage = "none";
+    //             lensDirty = false;
+    //         }
+    //         return;
+    //     }
 
-        // 間引き
-        if (now - lensLastLogic < LENS_LOGIC_INTERVAL) return;
-        lensLastLogic = now;
+    //     // 間引き
+    //     if (now - lensLastLogic < LENS_LOGIC_INTERVAL) return;
+    //     lensLastLogic = now;
 
-        const dx = (Math.random() - 0.5) * LENS_DISTORT;
-        const dy = (Math.random() - 0.5) * LENS_DISTORT;
+    //     const dx = (Math.random() - 0.5) * LENS_DISTORT;
+    //     const dy = (Math.random() - 0.5) * LENS_DISTORT;
 
-        const blur = Math.random() * LENS_BLUR;
-        const hue = (Math.random() - 0.5) * 60;
+    //     const blur = Math.random() * LENS_BLUR;
+    //     const hue = (Math.random() - 0.5) * 60;
 
-        // dx,dy は「中心を微妙に揺らす」用途として反映（mask側に）
-        const cx = lensMouseX + dx;
-        const cy = lensMouseY + dy;
+    //     // dx,dy は「中心を微妙に揺らす」用途として反映（mask側に）
+    //     const cx = lensMouseX + dx;
+    //     const cy = lensMouseY + dy;
 
-        lensLayer.style.backdropFilter = `blur(${blur}px) contrast(180%) brightness(85%) saturate(160%) hue-rotate(${hue}deg)`;
-        lensLayer.style.webkitBackdropFilter = `blur(${blur}px) hue-rotate(${hue}deg) contrast(120%)`;
+    //     lensLayer.style.backdropFilter = `blur(${blur}px) contrast(180%) brightness(85%) saturate(160%) hue-rotate(${hue}deg)`;
+    //     lensLayer.style.webkitBackdropFilter = `blur(${blur}px) hue-rotate(${hue}deg) contrast(120%)`;
 
-        lensLayer.style.maskImage =
-            `radial-gradient(
-            circle ${LENS_RADIUS}px at ${cx}px ${cy}px,
-            rgba(0,0,0,0.9) 0%,
-            rgba(0,0,0,0.7) 40%,
-            rgba(0,0,0,0.3) 70%,
-            transparent 100%
-        )`;
+    //     lensLayer.style.maskImage =
+    //         `radial-gradient(
+    //         circle ${LENS_RADIUS}px at ${cx}px ${cy}px,
+    //         rgba(0,0,0,0.9) 0%,
+    //         rgba(0,0,0,0.7) 20%,
+    //         rgba(0,0,0,0.3) 70%,
+    //         transparent 100%
+    //     )`;
 
-        lensDirty = false;
-    }
+    //     lensDirty = false;
+    // }
 });
 
